@@ -12,11 +12,11 @@ app.get("/", (req, res) => {
 
 mongoose
   .connect(
-    "mongodb+srv://dejvdobrovolny642001:ONYYiC8Desbnbn7C@wtbbtwbackend.1tdce.mongodb.net/shopping_lists?retryWrites=true&w=majority&appName=WTBBTWbackend"
+    "mongodb+srv://admin:fZeg7mCgm9XXT@backenddb.q7ys5.mongodb.net/shoppinglists?retryWrites=true&w=majority&appName=BackendDB"
   )
-  .connect.then(() => {
-    console.log("Conected to databese.");
+  .then(() => {
+    console.log("Connected to database.");
   })
   .catch((err) => {
-    console.log(err);
+    console.log("Error connecting to database:", err);
   });
