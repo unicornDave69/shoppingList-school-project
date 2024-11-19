@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 mongoose
-  .connect("mongodb://localhost:27017/wtbbtw")
+  .connect("mongodb://localhost:27017/WTBBTW")
   .then(() => {
     console.log("Connected to database.");
   })
