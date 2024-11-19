@@ -11,9 +11,7 @@ app.get("/", (req, res) => {
 });
 
 mongoose
-  .connect(
-    "mongodb+srv://daviddobrovolny10:PCqdrMsmGKMhujNG@wtbbtw.qvtnx.mongodb.net/?retryWrites=true&w=majority&appName=wtbbtw"
-  )
+  .connect("mongodb://localhost:27017/wtbbtw/shoppinglists")
   .then(() => {
     console.log("Connected to database.");
   })
