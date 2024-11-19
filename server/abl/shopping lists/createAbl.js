@@ -17,4 +17,12 @@ const ShoppingListSchema = mongoose.Schema({
     type: [Object],
     required: false,
   },
+  status: {
+    type: Boolean,
+    required: true,
+  },
 });
+
+const ShoppingList = mongoose.model("ShoppingList", ShoppingListSchema);
+
+module.exports = CreateAbl;
