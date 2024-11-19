@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Definice schématu
 const ShoppingListSchema = mongoose.Schema({
   name: {
     type: String,
@@ -23,6 +24,7 @@ const ShoppingListSchema = mongoose.Schema({
   },
 });
 
+// Model
 const ShoppingList = mongoose.model("ShoppingList", ShoppingListSchema);
 
-module.exports = CreateAbl;
+module.exports = ShoppingList;
