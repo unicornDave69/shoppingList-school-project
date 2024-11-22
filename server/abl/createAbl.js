@@ -2,10 +2,10 @@ const ShoppingList = require("../model/ShoppingList");
 
 async function CreateAbl(req, res) {
   try {
-    const record = req.body;
-    const createdRecord = await ShoppingList.create(record);
+    const list = req.body;
+    const createdlist = await ShoppingList.create(list);
 
-    res.status(201).json(createdRecord);
+    res.status(201).json(createdlist);
   } catch (error) {
     console.error("Error creating shopping list:", error.message);
 
