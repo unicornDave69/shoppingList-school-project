@@ -1,30 +1,26 @@
-const mongoose = require("mongoose");
+const ShoppingList = require("../model/ShoppingList");
 
-// Definice schématu
-const ShoppingListSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  owner: {
-    type: String,
-    required: true,
-  },
-  memberList: {
-    type: [String],
-    required: false,
-  },
-  itemList: {
-    type: [Object],
-    required: false,
-  },
-  status: {
-    type: Boolean,
-    required: true,
-  },
-});
+async function CreateAbl(req, res) {
+  try {
+    const record = req.body;
 
-// Model
-const ShoppingList = mongoose.model("ShoppingList", ShoppingListSchema);
+    // Validace a vytvoření pomocí Mongoose
+    const createdRecord = await ShoppingList.create(record);
 
-module.exports = ShoppingList;
+    res.status(201).json(createdRecord);
+  } catch (error) {
+    console.error("Error creating shopping list:", error.message);
+
+    if (error.name === "ValidationError") {
+      res.status(400).json({
+        code: "validationError",
+        message: "Validation failed.",
+        validationError: error.errors,
+      });
+    } else {
+      res.status(500).json({ message: error.message });
+    }
+  }
+}
+
+module.exports = CreateAbl;
