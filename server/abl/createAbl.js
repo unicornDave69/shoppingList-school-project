@@ -3,8 +3,6 @@ const ShoppingList = require("../model/ShoppingList");
 async function CreateAbl(req, res) {
   try {
     const record = req.body;
-
-    // Validace a vytvoření pomocí Mongoose
     const createdRecord = await ShoppingList.create(record);
 
     res.status(201).json(createdRecord);
