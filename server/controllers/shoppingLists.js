@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/create", CreateAbl);
 router.get("/list", ListAbl);
+router.get("/get/:id ", ListAbl);
 
 module.exports = router;
