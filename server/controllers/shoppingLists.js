@@ -11,6 +11,6 @@ router.post("/create", CreateAbl);
 router.get("/list", ListAbl);
 router.get("/get/:id", GetByIdAbl);
 router.put("/put/:id", UpdateByIdAbl);
-router.delete("/delete/:id", DeleteAbl);
+router.delete("/delete", DeleteAbl);
 
 module.exports = router;
