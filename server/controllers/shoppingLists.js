@@ -5,6 +5,6 @@ const ListAbl = require("../abl/listAbl");
 const router = express.Router();
 
 router.post("/create", CreateAbl);
-router.get("/listAllRecords", ListAbl);
+router.get("/list", ListAbl);
 
 module.exports = router;
