@@ -1,24 +1,35 @@
+const Joi = require("joi");
 const ShoppingList = require("../model/ShoppingList");
 
-async function CreateAbl(req, res) {
-  try {
-    const list = req.body;
-    const createdlist = await ShoppingList.create(list);
+const CreateAbl = async (req, res) => {
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    owner: Joi.string().required(),
+    memberList: Joi.array().items(Joi.string()),
+    itemList: Joi.array().items(
+      Joi.object({
+        itemName: Joi.string().required(),
+        quantity: Joi.number().required(),
+        resolved: Joi.boolean(),
+      })
+    ),
+    status: Joi.boolean().required(),
+  });
 
-    res.status(201).json(createdlist);
-  } catch (error) {
-    console.error("Error creating shopping list:", error.message);
-
-    if (error.name === "ValidationError") {
-      res.status(400).json({
-        code: "validationError",
-        message: "Validation failed.",
-        validationError: error.errors,
-      });
-    } else {
-      res.status(500).json({ message: error.message });
-    }
+  const { error } = schema.validate(req.body);
+  if (error) {
+    return res
+      .status(400)
+      .json({ code: "validationError", message: error.details[0].message });
   }
-}
+
+  try {
+    const createdList = await ShoppingList.create(req.body);
+    res.status(201).json({ code: "success", list: createdList });
+  } catch (err) {
+    console.error("Error creating shopping list:", err.message);
+    res.status(500).json({ code: "serverError", message: err.message });
+  }
+};
 
 module.exports = CreateAbl;

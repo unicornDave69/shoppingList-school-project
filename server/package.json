@@ -3,6 +3,7 @@
     "ajv": "^8.17.1",
     "express": "^4.21.1",
     "express-json-validator-middleware": "^3.0.1",
+    "joi": "^17.13.3",
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.1",
     "nodemon": "^3.1.7"
