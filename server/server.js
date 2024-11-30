@@ -8,8 +8,10 @@ const app = express();
 
 app.use(express.json());
 
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/WTBBTW";
+
 mongoose
-  .connect("mongodb://localhost:27017/WTBBTW")
+  .connect(MONGO_URI)
   .then(() => {
     console.log("Connected to database.");
   })
@@ -23,6 +25,7 @@ app.use((req, res) => {
   res.status(404).send("404 Not Found");
 });
 
-app.listen(8000, () => {
-  console.log("Server is running on port 8000!");
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}!`);
 });
