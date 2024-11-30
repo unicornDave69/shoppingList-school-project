@@ -8,12 +8,12 @@ const CreateAbl = async (req, res) => {
     memberList: Joi.array().items(Joi.string()),
     itemList: Joi.array().items(
       Joi.object({
-        itemName: Joi.string().required(),
-        quantity: Joi.number().required(),
+        itemName: Joi.string(),
+        quantity: Joi.number(),
         resolved: Joi.boolean(),
       })
     ),
-    status: Joi.boolean().required(),
+    status: "active",
   });
 
   const { error } = schema.validate(req.body);
