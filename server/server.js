@@ -3,13 +3,13 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const ShoppingListController = require("./controllers/shoppingLists");
+const AuthController = require("./abl/auth/regLog-userAbl");
 
 const app = express();
 
 app.use(express.json());
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/WTBBTW";
-
 mongoose
   .connect(MONGO_URI)
   .then(() => {
@@ -18,6 +18,8 @@ mongoose
   .catch((err) => {
     console.log("Error connecting to database:", err);
   });
+
+app.use("/auth", AuthController);
 
 app.use("/lists", ShoppingListController);
 
