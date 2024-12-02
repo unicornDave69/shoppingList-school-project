@@ -9,7 +9,8 @@ const app = express();
 
 app.use(express.json());
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/WTBBTW";
+const MONGO_URI =
+  process.env.MONGO_URI || "mongodb://localhost:27017/WTBBTW/shoppinglists";
 mongoose
   .connect(MONGO_URI)
   .then(() => {
@@ -19,7 +20,7 @@ mongoose
     console.log("Error connecting to database:", err);
   });
 
-app.use("/auth", AuthController);
+//app.use("/auth", AuthController);
 
 app.use("/lists", ShoppingListController);
 

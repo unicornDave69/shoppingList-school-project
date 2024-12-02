@@ -8,10 +8,21 @@ const authenticateJWT = require("../middleware/middleware");
 
 const router = express.Router();
 
-router.post("/create", authenticateJWT, CreateAbl);
-router.get("/list", authenticateJWT, ListAbl);
-router.get("/get/:id", authenticateJWT, GetByIdAbl);
-router.put("/put/:id", authenticateJWT, UpdateByIdAbl);
-router.delete("/delete", authenticateJWT, DeleteAbl);
+router.get(
+  "/list", //authenticateJWT,
+  ListAbl
+);
+router.get(
+  "/get/:id", //authenticateJWT,
+  GetByIdAbl
+);
+router.put(
+  "/put/:id", //authenticateJWT,
+  UpdateByIdAbl
+);
+router.delete(
+  "/delete", //authenticateJWT,
+  DeleteAbl
+);
 
 module.exports = router;
