@@ -20,36 +20,6 @@ function CreateListModal({
     );
   };
 
-  const handleSaveToDatabase = async () => {
-    const dataToSend = {
-      name: listName,
-      owner: loggedInUser,
-      memberList: selectedMembers,
-      itemList: [],
-      status: "active",
-    };
-
-    try {
-      const response = await fetch("http://localhost:8000/lists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to save list to database.");
-      }
-
-      const newList = await response.json();
-      console.log("List saved to database:", newList);
-      handleCloseModal();
-    } catch (error) {
-      console.error("Error saving list to database:", error);
-    }
-  };
-
   return (
     <Modal show={showModal} onHide={handleCloseModal}>
       <Modal.Header closeButton>
@@ -104,7 +74,7 @@ function CreateListModal({
         <Button variant="secondary" onClick={handleCloseModal}>
           Close
         </Button>
-        <Button variant="primary" onClick={handleSaveToDatabase}>
+        <Button variant="primary" onClick={handleSaveList}>
           Save List
         </Button>
       </Modal.Footer>

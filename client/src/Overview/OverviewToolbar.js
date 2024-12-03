@@ -89,17 +89,35 @@ function Toolbar() {
     handleCloseArchiveModal();
   };
 
-  const handleSaveList = () => {
+  const handleSaveList = async () => {
     const newList = {
-      id: `sl${Math.random()}`,
       name: listName,
       owner: loggedInUser,
       memberList: selectedMembers,
-      itemList: {},
-      status: "active",
+      itemList: [],
+      status: false,
     };
-    handleCreate(newList);
-    console.log("New list created:", newList);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/lists/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newList),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to create list: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log("Created list:", result.list);
+      handleCreate(result.list);
+    } catch (error) {
+      console.error("Error creating list:", error);
+    }
+
     setListName("");
     setSelectedMembers([]);
     handleCloseModal();
