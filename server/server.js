@@ -1,6 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+
 require("dotenv").config();
+app.use(cors());
 
 const ShoppingListController = require("./controllers/shoppingLists");
 const AuthController = require("./abl/auth/regLog-userAbl");
