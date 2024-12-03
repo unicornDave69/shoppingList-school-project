@@ -8,12 +8,12 @@ const CreateAbl = async (req, res) => {
     memberList: Joi.array().items(Joi.string()),
     itemList: Joi.array().items(
       Joi.object({
-        itemName: Joi.string(),
-        quantity: Joi.number(),
+        itemName: Joi.string().required(),
+        quantity: Joi.number().required(),
         resolved: Joi.boolean(),
       })
     ),
-    status: "active",
+    status: Joi.boolean(),
   });
 
   const { error } = schema.validate(req.body);
@@ -24,7 +24,16 @@ const CreateAbl = async (req, res) => {
   }
 
   try {
-    const createdList = await ShoppingList.create(req.body);
+    const { name, owner, memberList, itemList, status } = req.body;
+
+    const createdList = await ShoppingList.create({
+      name,
+      owner,
+      memberList,
+      itemList,
+      status,
+    });
+
     res.status(201).json({ code: "success", list: createdList });
   } catch (err) {
     console.error("Error creating shopping list:", err.message);
