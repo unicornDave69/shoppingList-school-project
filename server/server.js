@@ -22,7 +22,7 @@ mongoose
 
 //app.use("/auth", AuthController);
 
-app.use("/lists", ShoppingListController);
+app.use("/", ShoppingListController);
 
 app.use((req, res) => {
   res.status(404).send("404 Not Found");
