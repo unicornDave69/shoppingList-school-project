@@ -21,7 +21,6 @@ function CreateListModal({
   };
 
   const handleSaveToDatabase = async () => {
-    const now = new Date();
     const dataToSend = {
       name: listName,
       owner: loggedInUser,
