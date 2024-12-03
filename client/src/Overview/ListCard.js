@@ -11,7 +11,6 @@ function ListCard({
   handleShowConfirmModal,
   handleShowArchiveModal,
   isOwner,
-  showDetail,
 }) {
   const navigate = useNavigate();
 

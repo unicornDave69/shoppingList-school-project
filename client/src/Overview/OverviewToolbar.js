@@ -95,6 +95,7 @@ function Toolbar() {
       name: listName,
       owner: loggedInUser,
       memberList: selectedMembers,
+      itemList: {},
       status: "active",
     };
     handleCreate(newList);

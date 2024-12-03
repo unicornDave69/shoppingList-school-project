@@ -9,6 +9,7 @@ function OverviewProvider({ children }) {
       name: "Test",
       owner: "u1",
       memberList: ["u3"],
+      itemList: [],
       status: "active",
     },
   ]);
