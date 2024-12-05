@@ -68,11 +68,30 @@ function Toolbar() {
 
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
 
-  const confirmDelete = () => {
-    if (listToDelete) {
+  const confirmDelete = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8000/api/lists/delete/:id",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newList),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete list: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      console.log("Deleted list:", result.list);
       handleDelete(listToDelete.id);
+    } catch (error) {
+      console.error("Error deleting list:", error);
     }
-    handleCloseConfirmModal();
+    handleCloseModal();
   };
 
   const handleShowArchiveModal = (list) => {
@@ -128,9 +147,9 @@ function Toolbar() {
     setShowTable(true);
   };
 
-  useEffect(() => {
-    console.log("Filtered lists:", filteredOV);
-  }, [filteredOV]);
+  // useEffect(() => {
+  //   console.log("Filtered lists:", filteredOV);
+  // }, [filteredOV]);
 
   return (
     <Container>
