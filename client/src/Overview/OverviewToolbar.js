@@ -86,7 +86,7 @@ function Toolbar() {
       }
 
       const result = await response.json();
-      console.log("Deleted list:", result.list);
+      console.log("Deleted list:", result.listToDelete);
       handleDelete(listToDelete.id);
     } catch (error) {
       console.error("Error deleting list:", error);
