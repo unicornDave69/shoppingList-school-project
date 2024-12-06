@@ -24,8 +24,8 @@ const ShoppingListSchema = new mongoose.Schema({
     required: false,
   },
   status: {
-    type: Boolean,
-    default: false,
+    type: String,
+    default: "",
   },
 });
 
