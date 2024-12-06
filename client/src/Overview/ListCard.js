@@ -3,7 +3,6 @@ import { Card, Button } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { IoIosArchive } from "react-icons/io";
 import { TbListDetails } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
 
 function ListCard({
   list,
@@ -11,11 +10,34 @@ function ListCard({
   handleShowConfirmModal,
   handleShowArchiveModal,
   isOwner,
+  findShoppingList,
+  handleCloseConfirmModal,
 }) {
-  const navigate = useNavigate();
+  const handleDetailNavigation = async (listId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/lists/get/${listId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  const handleDetailNavigation = (listId) => {
-    navigate(`/list/${listId}`);
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Failed to get list: ${errorMessage}`);
+      }
+
+      const result = await response.json();
+      console.log("Geted list:", result);
+      findShoppingList(list.id);
+    } catch (error) {
+      console.error("Error finding list:", error);
+    } finally {
+      handleCloseConfirmModal();
+    }
   };
 
   return (
