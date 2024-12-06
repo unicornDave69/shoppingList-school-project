@@ -69,29 +69,32 @@ function Toolbar() {
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
 
   const confirmDelete = async () => {
+    if (!listToDelete) return;
+
     try {
       const response = await fetch(
-        "http://localhost:8000/api/lists/delete/:id",
+        `http://localhost:8000/api/lists/delete/${listToDelete.id}`,
         {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(newList),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Failed to delete list: ${response.statusText}`);
+        const errorMessage = await response.text();
+        throw new Error(`Failed to delete list: ${errorMessage}`);
       }
 
       const result = await response.json();
-      console.log("Deleted list:", result.listToDelete);
+      console.log("Deleted list:", result);
       handleDelete(listToDelete.id);
     } catch (error) {
       console.error("Error deleting list:", error);
+    } finally {
+      handleCloseConfirmModal();
     }
-    handleCloseModal();
   };
 
   const handleShowArchiveModal = (list) => {
@@ -114,7 +117,7 @@ function Toolbar() {
       owner: loggedInUser,
       memberList: selectedMembers,
       itemList: [],
-      status: false,
+      status: "active",
     };
 
     try {
@@ -131,7 +134,6 @@ function Toolbar() {
       }
 
       const result = await response.json();
-      console.log("Created list:", result.list);
       handleCreate(result.list);
     } catch (error) {
       console.error("Error creating list:", error);
