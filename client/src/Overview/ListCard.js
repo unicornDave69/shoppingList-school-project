@@ -108,7 +108,7 @@ function ListCard({
         )}
         <Button
           variant="primary"
-          onClick={() => handleDetailNavigation(list.id)}
+          onClick={() => handleDetailNavigation(listId)}
           style={{
             borderRadius: "50%",
             width: "75px",
