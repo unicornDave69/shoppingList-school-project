@@ -2,6 +2,7 @@ const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
 const request = require("supertest");
 const { describe, it, expect } = require("@jest/globals");
+const mongoose = require("mongoose");
 
 describe("DELETE /api/lists/delete/:id", () => {
   jest.setTimeout(10000);
@@ -17,7 +18,7 @@ describe("DELETE /api/lists/delete/:id", () => {
 
     const res = await request(app).delete(`/api/lists/delete/${list._id}`);
     expect(res.status).toBe(200);
-    expect(res.body.message).toBe("Shopping list was deleted correctly.");
+    expect(res.body.message).toBe("Shopping list deleted successfully.");
   });
 
   it("if the list does not exist should return 404 ", async () => {
