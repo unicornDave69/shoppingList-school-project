@@ -1,6 +1,8 @@
-import ShoppingList from "../../model/ShoppingList";
+const ShoppingList = require("../../model/ShoppingList");
+const app = require("../../server");
 
 describe("DELETE /api/lists/delete/:id", () => {
+  jest.setTimeout(10000);
   it("should delete the list", async () => {
     const list = await ShoppingList.create({
       id: "34das178wq59fe20",

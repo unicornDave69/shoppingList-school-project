@@ -1,6 +1,7 @@
-const ShoppingList = require("../../model/ShoppingList");
+const app = require("../../server");
 
 describe("POST/api/lists/create", async () => {
+  jest.setTimeout(10000);
   it("should create a new list", async () => {
     const newlist = {
       id: "34das178wq59fe20",

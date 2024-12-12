@@ -1,7 +1,9 @@
 const { default: mongoose } = require("mongoose");
 const ShoppingList = require("../../model/ShoppingList");
+const app = require("../../server");
 
 describe("GET/api/lists/get/:id", () => {
+  jest.setTimeout(10000);
   it("should return list based on id", async () => {
     const list = await ShoppingList.create({
       id: "34das178wq59fe20",

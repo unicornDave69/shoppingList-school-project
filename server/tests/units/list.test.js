@@ -1,6 +1,8 @@
+const app = require("../../server");
 const ShoppingList = require("../../model/ShoppingList");
 
 describe("GET/api/lists/list", () => {
+  jest.setTimeout(10000);
   it("should return every list", async () => {
     await ShoppingList.create({
       id: "34das178wq59fe20",
