@@ -5,10 +5,10 @@ require("dotenv").config();
 
 const app = express();
 
-// cors configuration
+// CORS konfigurace
 const corsOptions = {
-  origin: "http://localhost:3000", // allow only front-end on localhost:3000
-  methods: ["GET", "POST", "PUT", "DELETE"], // HTTP methods
+  origin: "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type"],
 };
 
@@ -26,13 +26,16 @@ const connectToMongoDB = async () => {
   }
 };
 
-// Call the async MongoDB connection function
 connectToMongoDB();
 
-// controller import
+// Import controlleru
 const ShoppingListController = require("./controllers/shoppingLists");
 app.use("/api/lists", ShoppingListController);
 
-app.listen(8001);
+if (process.env.NODE_ENV !== "test") {
+  app.listen(8005, () => {
+    console.log("Server is running on port 8005");
+  });
+}
 
 module.exports = app;

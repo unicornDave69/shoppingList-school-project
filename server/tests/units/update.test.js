@@ -1,11 +1,15 @@
 const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
 const request = require("supertest");
-const { describe, it, expect } = require("@jest/globals");
+const { describe, it, expect, afterAll } = require("@jest/globals");
 const mongoose = require("mongoose");
 
 describe("PUT /api/lists/put/:id", () => {
   jest.setTimeout(10000);
+
+  afterAll(async () => {
+    await mongoose.connection.close(); // Zavření MongoDB připojení
+  });
 
   it("should update the list", async () => {
     const list = await ShoppingList.create({
@@ -26,13 +30,13 @@ describe("PUT /api/lists/put/:id", () => {
   });
 
   it("if the list does not exist should return 404", async () => {
-    const invalidId = mongoose.Types.ObjectId();
+    const invalidId = new mongoose.Types.ObjectId();
     const res = await request(app)
       .put(`/api/lists/put/${invalidId}`)
       .send({
         id: "34das178wq59fe20",
         name: "Updated list",
-        owner: "u1",
+        owner: true,
         memberList: ["u2", "u3"],
         itemList: [],
         status: "active",

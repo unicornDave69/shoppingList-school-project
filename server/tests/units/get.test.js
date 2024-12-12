@@ -23,7 +23,7 @@ describe("GET /api/lists/get/:id", () => {
   });
 
   it("should return 404 if the shopping list was not found or does not exist", async () => {
-    const invalidId = mongoose.Types.ObjectId();
+    const invalidId = new mongoose.Types.ObjectId();
     const res = await request(app).get(`/api/lists/get/${invalidId}`);
     expect(res.status).toBe(404);
     expect(res.body.error).toBe("Shopping list not found.");

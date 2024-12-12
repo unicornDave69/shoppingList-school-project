@@ -1,15 +1,20 @@
 const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
 const request = require("supertest");
-const { describe, it, expect } = require("@jest/globals");
+const { describe, it, expect, beforeEach, afterAll } = require("@jest/globals");
 const mongoose = require("mongoose");
 
 describe("DELETE /api/lists/delete/:id", () => {
-  jest.setTimeout(10000);
+  beforeEach(async () => {
+    await ShoppingList.deleteMany({});
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
 
   it("should delete the list", async () => {
     const list = await ShoppingList.create({
-      id: "34das178wq59fe20",
       name: "Testing list",
       owner: "u1",
       memberList: ["u2", "u3"],
@@ -23,9 +28,9 @@ describe("DELETE /api/lists/delete/:id", () => {
   });
 
   it("if the list does not exist should return 404", async () => {
-    const invalidId = mongoose.Types.ObjectId();
+    const invalidId = new mongoose.Types.ObjectId();
     const res = await request(app).delete(`/api/lists/delete/${invalidId}`);
     expect(res.status).toBe(404);
-    expect(res.body.error).toBe("Shopping list was not found.");
+    expect(res.body.error).toBe("Shopping list not found.");
   });
 });

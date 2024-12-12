@@ -13,7 +13,7 @@ const CreateAbl = async (req, res) => {
         resolved: Joi.boolean(),
       })
     ),
-    status: Joi.string(),
+    status: Joi.string().valid("active", "archived"),
   });
 
   const { error } = schema.validate(req.body);

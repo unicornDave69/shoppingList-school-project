@@ -1,10 +1,19 @@
 const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
 const request = require("supertest");
-const { describe, it, expect } = require("@jest/globals");
+const { describe, it, expect, beforeEach, afterAll } = require("@jest/globals");
+const mongoose = require("mongoose");
 
 describe("GET /api/lists/list", () => {
   jest.setTimeout(10000);
+
+  beforeEach(async () => {
+    await ShoppingList.deleteMany({});
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
 
   it("should return every list", async () => {
     await ShoppingList.create({
@@ -23,7 +32,6 @@ describe("GET /api/lists/list", () => {
   });
 
   it("should return an empty list", async () => {
-    await ShoppingList.deleteMany({});
     const res = await request(app).get("/api/lists/list");
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(0);
