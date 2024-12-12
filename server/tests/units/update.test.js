@@ -1,6 +1,7 @@
 const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
 const request = require("supertest");
+const mongoose = require("mongoose");
 
 describe("PUT /api/lists/put/:id", () => {
   jest.setTimeout(10000);
@@ -23,7 +24,7 @@ describe("PUT /api/lists/put/:id", () => {
   });
 
   it("if the list does not exist should return 404", async () => {
-    const invalidId = mongoose.Types.ObjectId();
+    const invalidId = new mongoose.Types.ObjectId();
     const res = await request(app)
       .put(`/api/lists/put/${invalidId}`)
       .send({
