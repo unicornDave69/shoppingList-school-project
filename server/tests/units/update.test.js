@@ -1,5 +1,6 @@
 const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
+const request = require("supertest");
 
 describe("PUT /api/lists/put/:id", () => {
   jest.setTimeout(10000);

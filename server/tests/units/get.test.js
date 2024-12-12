@@ -1,6 +1,10 @@
 const { default: mongoose } = require("mongoose");
 const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
+const request = require("supertest");
+const describe = require("supertest");
+const it = require("supertest");
+const expect = require("supertest");
 
 describe("GET/api/lists/get/:id", () => {
   jest.setTimeout(10000);

@@ -25,7 +25,7 @@ mongoose
 const ShoppingListController = require("./controllers/shoppingLists");
 app.use("/api/lists", ShoppingListController);
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+const PORT = 8000;
+app.listen(console.log(`Server is running on port ${PORT}`));
 
 module.exports = app;

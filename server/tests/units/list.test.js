@@ -1,5 +1,9 @@
 const app = require("../../server");
 const ShoppingList = require("../../model/ShoppingList");
+const request = require("supertest");
+const describe = require("supertest");
+const it = require("supertest");
+const expect = require("supertest");
 
 describe("GET/api/lists/list", () => {
   jest.setTimeout(10000);
