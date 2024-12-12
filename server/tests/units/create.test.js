@@ -1,8 +1,6 @@
 const app = require("../../server");
 const request = require("supertest");
-const describe = require("supertest");
-const it = require("supertest");
-const expect = require("supertest");
+const { describe, it, expect } = require("@jest/globals");
 
 describe("POST/api/lists/create", async () => {
   jest.setTimeout(10000);

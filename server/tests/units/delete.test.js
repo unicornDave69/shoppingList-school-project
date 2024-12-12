@@ -1,9 +1,7 @@
 const ShoppingList = require("../../model/ShoppingList");
 const app = require("../../server");
 const request = require("supertest");
-const describe = require("supertest");
-const it = require("supertest");
-const expect = require("supertest");
+const { describe, it, expect } = require("@jest/globals");
 
 describe("DELETE /api/lists/delete/:id", () => {
   jest.setTimeout(10000);

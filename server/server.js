@@ -33,6 +33,6 @@ connectToMongoDB();
 const ShoppingListController = require("./controllers/shoppingLists");
 app.use("/api/lists", ShoppingListController);
 
-app.listen(8080);
+app.listen(8001);
 
 module.exports = app;
