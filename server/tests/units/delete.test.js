@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 
 describe("DELETE /api/lists/delete/:id", () => {
   jest.setTimeout(10000);
+
   it("should delete the list", async () => {
     const list = await ShoppingList.create({
       id: "34das178wq59fe20",
@@ -21,7 +22,7 @@ describe("DELETE /api/lists/delete/:id", () => {
     expect(res.body.message).toBe("Shopping list deleted successfully.");
   });
 
-  it("if the list does not exist should return 404 ", async () => {
+  it("if the list does not exist should return 404", async () => {
     const invalidId = mongoose.Types.ObjectId();
     const res = await request(app).delete(`/api/lists/delete/${invalidId}`);
     expect(res.status).toBe(404);

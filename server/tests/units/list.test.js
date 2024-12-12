@@ -1,10 +1,11 @@
-const app = require("../../server");
 const ShoppingList = require("../../model/ShoppingList");
+const app = require("../../server");
 const request = require("supertest");
 const { describe, it, expect } = require("@jest/globals");
 
-describe("GET/api/lists/list", () => {
+describe("GET /api/lists/list", () => {
   jest.setTimeout(10000);
+
   it("should return every list", async () => {
     await ShoppingList.create({
       id: "34das178wq59fe20",
