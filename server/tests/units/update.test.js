@@ -1,3 +1,5 @@
+import ShoppingList from "../../model/ShoppingList";
+
 describe("PUT /api/lists/put/:id", () => {
   it("should update the list", async () => {
     const list = await ShoppingList.create({
@@ -21,7 +23,14 @@ describe("PUT /api/lists/put/:id", () => {
     const invalidId = mongoose.Types.ObjectId();
     const res = await request(app)
       .put(`/api/lists/put/${invalidId}`)
-      .send({ name: "Updated List" });
+      .send({
+        id: "34das178wq59fe20",
+        name: "Updated list",
+        owner: "u1",
+        memberList: ["u2", "u3"],
+        itemList: [],
+        status: "active",
+      });
 
     expect(res.statusCode).toBe(404);
     expect(res.body.error).toBe("Shopping list not found.");

@@ -1,3 +1,5 @@
+import ShoppingList from "../../model/ShoppingList";
+
 describe("DELETE /api/lists/delete/:id", () => {
   it("should delete the list", async () => {
     const list = await ShoppingList.create({
@@ -10,14 +12,14 @@ describe("DELETE /api/lists/delete/:id", () => {
     });
 
     const res = await request(app).delete(`/api/lists/delete/${list._id}`);
-    expect(res.statusCode).toBe(200);
+    expect(res.status).toBe(200);
     expect(res.body.message).toBe("Shopping list was deleted correctly.");
   });
 
   it("if the list does not exist should return 404 ", async () => {
     const invalidId = mongoose.Types.ObjectId();
     const res = await request(app).delete(`/api/lists/delete/${invalidId}`);
-    expect(res.statusCode).toBe(404);
+    expect(res.status).toBe(404);
     expect(res.body.error).toBe("Shopping list was not found.");
   });
 });

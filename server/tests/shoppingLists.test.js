@@ -4,7 +4,7 @@ const app = require("../server");
 const ShoppingList = require("../model/ShoppingList");
 
 beforeAll(async () => {
-  const MONGO_URI = "mongodb://localhost:27017/testDB";
+  const MONGO_URI = "mongodb://localhost:27017/WTBBTW ";
   await mongoose.connect(MONGO_URI);
 });
 
