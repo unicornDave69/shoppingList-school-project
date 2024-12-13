@@ -68,34 +68,34 @@ function Toolbar() {
 
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
 
-  const confirmDelete = async () => {
-    if (!listToDelete) return;
+  // const confirmDelete = async () => {
+  //   if (!listToDelete) return;
 
-    try {
-      const response = await fetch(
-        `http://localhost:8000/api/lists/delete/${listToDelete.id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:8000/api/lists/delete/${listToDelete.id}`,
+  //       {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Failed to delete list: ${errorMessage}`);
-      }
+  //     if (!response.ok) {
+  //       const errorMessage = await response.text();
+  //       throw new Error(`Failed to delete list: ${errorMessage}`);
+  //     }
 
-      const result = await response.json();
-      console.log("Deleted list:", result);
-      handleDelete(listToDelete.id);
-    } catch (error) {
-      console.error("Error deleting list:", error);
-    } finally {
-      handleCloseConfirmModal();
-    }
-  };
+  //     const result = await response.json();
+  //     console.log("Deleted list:", result);
+  //     handleDelete(listToDelete.id);
+  //   } catch (error) {
+  //     console.error("Error deleting list:", error);
+  //   } finally {
+  //     handleCloseConfirmModal();
+  //   }
+  // };
 
   const handleShowArchiveModal = (list) => {
     setListToArchive(list);
@@ -121,7 +121,7 @@ function Toolbar() {
     };
 
     try {
-      const response = await fetch("http://localhost:8000/api/lists/create", {
+      const response = await fetch("http://localhost:8005/api/lists/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -149,9 +149,9 @@ function Toolbar() {
     setShowTable(true);
   };
 
-  // useEffect(() => {
-  //   console.log("Filtered lists:", filteredOV);
-  // }, [filteredOV]);
+  useEffect(() => {
+    console.log("Filtered lists:", filteredOV);
+  }, [filteredOV]);
 
   return (
     <Container>
@@ -176,7 +176,7 @@ function Toolbar() {
         showConfirmModal={showConfirmModal}
         handleCloseConfirmModal={handleCloseConfirmModal}
         listToDelete={listToDelete}
-        confirmDelete={confirmDelete}
+        // confirmDelete={confirmDelete}
       />
       <ConfirmArchiveModal
         showArchiveModal={showArchiveModal}

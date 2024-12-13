@@ -13,32 +13,32 @@ function ListCard({
   findShoppingList,
   handleCloseConfirmModal,
 }) {
-  const handleDetailNavigation = async (listId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8000/api/lists/get/${listId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  // const handleDetailNavigation = async (listId) => {
+  //   try {
+  //     const response = await fetch(
+  //       `http://localhost:8000/api/lists/get/${listId}`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
+  //     );
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Failed to get list: ${errorMessage}`);
-      }
+  //     if (!response.ok) {
+  //       const errorMessage = await response.text();
+  //       throw new Error(`Failed to get list: ${errorMessage}`);
+  //     }
 
-      const result = await response.json();
-      console.log("Geted list:", result);
-      findShoppingList(list.id);
-    } catch (error) {
-      console.error("Error finding list:", error);
-    } finally {
-      handleCloseConfirmModal();
-    }
-  };
+  //     const result = await response.json();
+  //     console.log("Geted list:", result);
+  //     findShoppingList(list.id);
+  //   } catch (error) {
+  //     console.error("Error finding list:", error);
+  //   } finally {
+  //     handleCloseConfirmModal();
+  //   }
+  // };
 
   return (
     <>
@@ -108,7 +108,7 @@ function ListCard({
         )}
         <Button
           variant="primary"
-          onClick={() => handleDetailNavigation(listId)}
+          // onClick={() => handleDetailNavigation(listId)}
           style={{
             borderRadius: "50%",
             width: "75px",
