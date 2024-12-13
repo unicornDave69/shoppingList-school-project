@@ -6,10 +6,7 @@ const { describe, it, expect, beforeAll, afterAll } = require("@jest/globals");
 
 beforeAll(async () => {
   const MONGO_URI = "mongodb://localhost:27017/WTBBTW";
-  await mongoose.connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(MONGO_URI);
 });
 
 afterAll(async () => {
