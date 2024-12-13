@@ -8,12 +8,11 @@ describe("PUT /api/lists/put/:id", () => {
   jest.setTimeout(10000);
 
   afterAll(async () => {
-    await mongoose.connection.close(); // Zavření MongoDB připojení
+    await mongoose.connection.close();
   });
 
   it("should update the list", async () => {
     const list = await ShoppingList.create({
-      id: "34das178wq59fe20",
       name: "Testing list",
       owner: "u1",
       memberList: ["u2", "u3"],
@@ -25,8 +24,10 @@ describe("PUT /api/lists/put/:id", () => {
       .put(`/api/lists/put/${list._id}`)
       .send({ name: "Updated List" });
 
+    const updatedList = await ShoppingList.findById(list._id);
+
     expect(res.statusCode).toBe(200);
-    expect(res.body.name).toBe("Updated List");
+    expect(updatedList.name).toBe("Updated List");
   });
 
   it("if the list does not exist should return 404", async () => {

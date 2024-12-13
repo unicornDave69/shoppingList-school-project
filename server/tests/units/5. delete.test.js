@@ -23,8 +23,12 @@ describe("DELETE /api/lists/delete/:id", () => {
     });
 
     const res = await request(app).delete(`/api/lists/delete/${list._id}`);
+
+    const deletedList = await ShoppingList.findById(list._id);
+
     expect(res.status).toBe(200);
     expect(res.body.message).toBe("Shopping list deleted successfully.");
+    expect(deletedList).toBeNull();
   });
 
   it("if the list does not exist should return 404", async () => {

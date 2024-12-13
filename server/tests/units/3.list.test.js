@@ -29,6 +29,8 @@ describe("GET /api/lists/list", () => {
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(1);
     expect(res.body[0].name).toBe("Testing list");
+
+    await ShoppingList.deleteMany({});
   });
 
   it("should return an empty list", async () => {
