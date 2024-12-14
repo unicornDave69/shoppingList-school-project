@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { DetailContext } from "../Providers/DetailProvider";
 import { OverviewContext } from "../Providers/OverviewProvider";
 import { UserContext } from "../Providers/UserProvider";
@@ -29,6 +29,32 @@ function DetailItemTable() {
   const navigate = useNavigate();
   const { listId } = useParams();
   const shoppingList = findShoppingList(listId);
+  const { setListDetails } = useContext(DetailContext);
+  useEffect(() => {
+    const fetchListDetails = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8005/api/lists/get/${listId}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch the shopping list.");
+        }
+
+        const listData = await response.json();
+        setListDetails(listData);
+      } catch (error) {
+        console.error("Error fetching list details:", error);
+        navigate("/");
+      }
+    };
+
+    fetchListDetails();
+  }, [listId, setListDetails, navigate]);
 
   if (!shoppingList) {
     return <h1>Seznam nebyl nalezen.</h1>;

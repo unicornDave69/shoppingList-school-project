@@ -1,13 +1,21 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
-function ConfirmDeleteModal({ showConfirmModal, handleCloseConfirmModal, listToDelete, confirmDelete }) {
+function ConfirmDeleteModal({
+  showConfirmModal,
+  handleCloseConfirmModal,
+  listToDelete,
+  confirmDelete,
+}) {
   return (
     <Modal show={showConfirmModal} onHide={handleCloseConfirmModal}>
       <Modal.Header closeButton>
         <Modal.Title>Potvrzení smazání</Modal.Title>
       </Modal.Header>
-      <Modal.Body>Opravdu chcete smazat seznam "{listToDelete?.name}"?</Modal.Body>
+      <Modal.Body>
+        Opravdu chcete smazat seznam "{listToDelete?.name}"? (ID:{" "}
+        {listToDelete?.id})
+      </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseConfirmModal}>
           Zrušit
