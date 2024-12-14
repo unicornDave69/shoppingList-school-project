@@ -24,7 +24,7 @@ function OverviewProvider({ children }) {
   };
 
   const findShoppingList = (id) => {
-    return shoppingLists.find((sl) => sl.id === id);
+    return shoppingLists.find((list) => list.id === id);
   };
 
   const handleArchive = (listId) => {

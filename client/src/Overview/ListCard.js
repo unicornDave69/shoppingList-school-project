@@ -3,6 +3,7 @@ import { Card, Button } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { IoIosArchive } from "react-icons/io";
 import { TbListDetails } from "react-icons/tb";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function ListCard({
   list,
@@ -13,31 +14,10 @@ function ListCard({
   findShoppingList,
   handleCloseConfirmModal,
 }) {
-  const handleDetailNavigation = async (listId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:8005/api/lists/get/${listId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  const navigate = useNavigate();
 
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Failed to get list: ${errorMessage}`);
-      }
-
-      const result = await response.json();
-      console.log("Geted list:", result);
-      findShoppingList(list.id);
-    } catch (error) {
-      console.error("Error finding list:", error);
-    } finally {
-      handleCloseConfirmModal();
-    }
+  const handleDetailNavigation = () => {
+    navigate(`/list/${list.id}`);
   };
 
   return (
@@ -108,7 +88,7 @@ function ListCard({
         )}
         <Button
           variant="primary"
-          onClick={() => handleDetailNavigation(list.id)}
+          onClick={handleDetailNavigation}
           style={{
             borderRadius: "50%",
             width: "75px",

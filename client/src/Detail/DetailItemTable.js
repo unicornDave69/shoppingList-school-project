@@ -30,6 +30,7 @@ function DetailItemTable() {
   const { listId } = useParams();
   const shoppingList = findShoppingList(listId);
   const { setListDetails } = useContext(DetailContext);
+
   useEffect(() => {
     const fetchListDetails = async () => {
       try {

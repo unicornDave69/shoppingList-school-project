@@ -17,7 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Overview />} />
               <Route
-                path="/list/:listId"
+                path="/api/lists/:listId"
                 element={<Detail DetailItemTable={DetailItemTable} />}
               />
             </Routes>

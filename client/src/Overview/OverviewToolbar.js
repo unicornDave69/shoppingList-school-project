@@ -8,9 +8,11 @@ import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import ConfirmArchiveModal from "./ConfirmArchiveModal";
 import ListCard from "./ListCard";
 import DetailTable from "../Detail/DetailItemTable";
+import { useNavigate } from "react-router-dom";
 
 function Toolbar() {
   const { loggedInUser, userMap } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const [shoppingLists, setShoppingLists] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
@@ -66,7 +68,7 @@ function Toolbar() {
 
     try {
       const response = await fetch(
-        `http://localhost:8005/api/lists/delete/${listToDelete.id}`, // Používáme ID z listToDelete
+        `http://localhost:8005/api/lists/delete/${listToDelete.id}`, // Using ID from listToDelete
         {
           method: "DELETE",
           headers: {
@@ -89,7 +91,7 @@ function Toolbar() {
     } catch (error) {
       console.error("Error deleting list:", error);
     } finally {
-      handleCloseConfirmModal();
+      handleCloseConfirmModal(); // Properly calling the function
     }
   };
 
@@ -146,6 +148,7 @@ function Toolbar() {
 
   const showDetail = (list) => {
     setSelectedList(list);
+    navigate(`/list/${list.id}`);
     setShowTable(true);
   };
 
