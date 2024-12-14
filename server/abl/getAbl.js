@@ -2,8 +2,7 @@ const ShoppingList = require("../model/ShoppingList");
 
 async function GetByIdAbl(req, res) {
   try {
-    const { id } = req.params;
-    const getListById = await ShoppingList.findById(id);
+    const getListById = await ShoppingList.findById(req.params.id);
     if (!getListById) {
       return res.status(404).json({ error: "Shopping list not found." });
     }

@@ -147,9 +147,13 @@ function Toolbar() {
   };
 
   const showDetail = (list) => {
-    setSelectedList(list);
-    navigate(`/list/${list.id}`);
-    setShowTable(true);
+    if (list.id) {
+      setSelectedList(list);
+      navigate(`/api/lists/get/${list.id}`);
+      setShowTable(true);
+    } else {
+      console.error("Invalid list ID:", list);
+    }
   };
 
   useEffect(() => {

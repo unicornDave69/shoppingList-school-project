@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const ShoppingList = require("../model/ShoppingList");
 
-async function DeleteAbl(req, res) {
+const DeleteAbl = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -20,9 +20,9 @@ async function DeleteAbl(req, res) {
 
     res.status(200).json({ message: "Shopping list deleted successfully." });
   } catch (error) {
-    console.error("Error deleting shopping list:", error.message);
-    res.status(500).json({ error: "Failed to delete shopping list." });
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
   }
-}
+};
 
 module.exports = DeleteAbl;

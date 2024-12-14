@@ -3,10 +3,12 @@ import DetailItemTable from "./DetailItemTable";
 import { useParams } from "react-router-dom";
 
 function Detail() {
-  const { listId } = useParams();
+  const { id } = useParams(); // id is the correct variable name based on the URL parameter
+
   return (
     <>
-      <DetailItemTable listId={listId} />
+      <DetailItemTable listId={id} />{" "}
+      {/* Pass id to DetailItemTable as listId */}
     </>
   );
 }
