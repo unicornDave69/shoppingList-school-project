@@ -60,6 +60,11 @@ function Toolbar() {
     setShowConfirmModal(true);
   };
 
+  const handleShowArchiveModal = (list) => {
+    setListToArchive(list);
+    setShowArchiveModal(true);
+  };
+
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
 
   const confirmDelete = async (listToDeleteId) => {
@@ -92,20 +97,35 @@ function Toolbar() {
     }
   };
 
-  const handleShowArchiveModal = (list) => {
-    setListToArchive(list);
-    setShowArchiveModal(true);
-  };
-
   const handleCloseArchiveModal = () => setShowArchiveModal(false);
 
-  const confirmArchive = () => {
-    if (listToArchive) {
+  const confirmArchive = async (listToArchive) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8005/api/lists/put/${listToArchive}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: "archived" }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to archive the list");
+      }
+
+      const result = await response.json();
+      console.log("List archived:", result);
+
       setShoppingLists((prevLists) =>
         prevLists.map((list) =>
-          list.id === listToArchive.id ? { ...list, status: "archived" } : list
+          list.id === listToArchive ? { ...list, status: "archived" } : list
         )
       );
+    } catch (error) {
+      console.error("Error archiving list:", error);
     }
     handleCloseArchiveModal();
   };
