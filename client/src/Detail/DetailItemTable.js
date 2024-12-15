@@ -18,10 +18,11 @@ import OwnerButtons from "./OwnerButtons";
 import LeaveButton from "./LeaveButton";
 
 function DetailItemTable() {
-  const { data, handlerMap, toggleShowResolved } = useContext(DetailContext);
-  const { findShoppingList, updateShoppingList } = useContext(OverviewContext);
+  const { handlerMap, toggleShowResolved } = useContext(DetailContext);
+  const { updateShoppingList } = useContext(OverviewContext);
   const { loggedInUser } = useContext(UserContext);
 
+  const [localShoppingList, setLocalShoppingList] = useState(null);
   const [showAddMembersModal, setShowAddMembersModal] = useState(false);
   const [showConfirmLeaveModal, setShowConfirmLeaveModal] = useState(false);
   const [showDeleteMembersModal, setShowDeleteMembersModal] = useState(false);
@@ -31,9 +32,7 @@ function DetailItemTable() {
   const navigate = useNavigate();
   const { listId } = useParams();
 
-  // findShoppingList(listId);
-
-  const shoppingList = useEffect(() => {
+  useEffect(() => {
     const fetchListDetails = async () => {
       try {
         const response = await fetch(
@@ -43,6 +42,7 @@ function DetailItemTable() {
           throw new Error("Failed to fetch list details");
         }
         const fetchedData = await response.json();
+        setLocalShoppingList(fetchedData);
         handlerMap.setListDetails(fetchedData);
       } catch (error) {
         console.error("Error fetching list details:", error);
@@ -52,11 +52,11 @@ function DetailItemTable() {
     fetchListDetails();
   }, [listId, handlerMap]);
 
-  if (!shoppingList) {
+  if (!localShoppingList) {
     return <h1>Seznam nebyl nalezen.</h1>;
   }
 
-  const isOwner = shoppingList.owner === loggedInUser;
+  const isOwner = localShoppingList.owner === loggedInUser;
 
   const handleRemoveMember = (memberId) => {
     setMemberToRemove(memberId);
@@ -64,10 +64,12 @@ function DetailItemTable() {
   };
 
   const handleConfirmLeave = () => {
-    const updatedMembers = shoppingList.memberList.filter(
+    const updatedMembers = localShoppingList.memberList.filter(
       (member) => member !== memberToRemove
     );
-    updateShoppingList(listId, { ...shoppingList, memberList: updatedMembers });
+    const updatedList = { ...localShoppingList, memberList: updatedMembers };
+    setLocalShoppingList(updatedList);
+    updateShoppingList(listId, updatedList);
     setShowConfirmLeaveModal(false);
 
     if (memberToRemove === loggedInUser) {
@@ -76,20 +78,26 @@ function DetailItemTable() {
   };
 
   const handleAddMember = (newMemberId) => {
-    const updatedMembers = [...shoppingList.memberList, newMemberId];
-    updateShoppingList(listId, { ...shoppingList, memberList: updatedMembers });
+    const updatedMembers = [...localShoppingList.memberList, newMemberId];
+    const updatedList = { ...localShoppingList, memberList: updatedMembers };
+    setLocalShoppingList(updatedList);
+    updateShoppingList(listId, updatedList);
   };
 
   const handleDeleteMembers = (membersToRemove) => {
-    const updatedMembers = shoppingList.memberList.filter(
+    const updatedMembers = localShoppingList.memberList.filter(
       (member) => !membersToRemove.includes(member)
     );
-    updateShoppingList(listId, { ...shoppingList, memberList: updatedMembers });
+    const updatedList = { ...localShoppingList, memberList: updatedMembers };
+    setLocalShoppingList(updatedList);
+    updateShoppingList(listId, updatedList);
     setShowDeleteMembersModal(false);
   };
 
   const handleUpdateListName = (newName) => {
-    updateShoppingList(listId, { ...shoppingList, name: newName });
+    const updatedList = { ...localShoppingList, name: newName };
+    setLocalShoppingList(updatedList);
+    updateShoppingList(listId, updatedList);
     setShowListNameModal(false);
   };
 
@@ -97,9 +105,9 @@ function DetailItemTable() {
     <>
       <BackToOverview />
       <div className="text-center my-4">
-        <h1>{shoppingList.name}</h1>
+        <h1>{localShoppingList.name}</h1>
       </div>
-      <ItemTable items={data.itemList} />
+      <ItemTable items={localShoppingList.itemList} />
       <div
         className="button-container d-flex justify-content-center align-items-center"
         style={{
@@ -140,13 +148,13 @@ function DetailItemTable() {
       <AddMembersModal
         show={showAddMembersModal}
         handleClose={() => setShowAddMembersModal(false)}
-        selectedMembers={shoppingList.memberList}
+        selectedMembers={localShoppingList.memberList}
         onAddMember={handleAddMember}
       />
       <DeleteMembersModal
         show={showDeleteMembersModal}
         handleClose={() => setShowDeleteMembersModal(false)}
-        selectedMembers={shoppingList.memberList}
+        selectedMembers={localShoppingList.memberList}
         onRemoveMember={handleDeleteMembers}
       />
       <ConfirmLeave
@@ -157,7 +165,7 @@ function DetailItemTable() {
       <ListNameModal
         show={showListNameModal}
         handleClose={() => setShowListNameModal(false)}
-        currentName={shoppingList.name}
+        currentName={localShoppingList.name}
         onUpdateName={handleUpdateListName}
       />
     </>
