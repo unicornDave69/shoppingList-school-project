@@ -18,6 +18,8 @@ function ListCard({
     navigate(`/lists/${list._id}`);
   };
   console.log(list);
+
+  function handleDeleteButton() {}
   return (
     <>
       <Card

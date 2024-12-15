@@ -8,11 +8,10 @@ import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import ConfirmArchiveModal from "./ConfirmArchiveModal";
 import ListCard from "./ListCard";
 import DetailTable from "../Detail/DetailItemTable";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function Toolbar() {
   const { loggedInUser, userMap } = useContext(UserContext);
-  const navigate = useNavigate();
 
   const [shoppingLists, setShoppingLists] = useState([]);
   const [showArchived, setShowArchived] = useState(false);
@@ -63,12 +62,10 @@ function Toolbar() {
 
   const handleCloseConfirmModal = () => setShowConfirmModal(false);
 
-  const confirmDelete = async () => {
-    if (!listToDelete) return;
-
+  const confirmDelete = async (listToDeleteId) => {
     try {
       const response = await fetch(
-        `http://localhost:8005/api/lists/delete/${listToDelete.id}`, // Using ID from listToDelete
+        `http://localhost:8005/api/lists/delete/${listToDeleteId}`,
         {
           method: "DELETE",
           headers: {
@@ -86,12 +83,12 @@ function Toolbar() {
       console.log("Deleted list:", result);
 
       setShoppingLists((prevLists) =>
-        prevLists.filter((list) => list.id !== listToDelete.id)
+        prevLists.filter((list) => list._id !== listToDeleteId)
       );
     } catch (error) {
       console.error("Error deleting list:", error);
     } finally {
-      handleCloseConfirmModal(); // Properly calling the function
+      handleCloseConfirmModal();
     }
   };
 
@@ -144,16 +141,6 @@ function Toolbar() {
     setListName("");
     setSelectedMembers([]);
     handleCloseModal();
-  };
-
-  const showDetail = (list) => {
-    if (list.id) {
-      setSelectedList(list);
-      navigate(`/api/lists/get/${list.id}`);
-      setShowTable(true);
-    } else {
-      console.error("Invalid list ID:", list);
-    }
   };
 
   useEffect(() => {
@@ -226,7 +213,6 @@ function Toolbar() {
                   handleShowConfirmModal={() => handleShowConfirmModal(list)}
                   handleShowArchiveModal={() => handleShowArchiveModal(list)}
                   isOwner={list.owner === loggedInUser}
-                  showDetail={showDetail}
                 />
               </Col>
             )

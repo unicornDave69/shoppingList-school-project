@@ -20,7 +20,10 @@ function ConfirmDeleteModal({
         <Button variant="secondary" onClick={handleCloseConfirmModal}>
           Zrušit
         </Button>
-        <Button variant="danger" onClick={confirmDelete}>
+        <Button
+          variant="danger"
+          onClick={() => confirmDelete(listToDelete._id)}
+        >
           Smazat
         </Button>
       </Modal.Footer>
