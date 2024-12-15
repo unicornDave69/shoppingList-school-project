@@ -24,6 +24,7 @@ function Toolbar() {
   const [showTable, setShowTable] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
   const [listToArchive, setListToArchive] = useState(null);
+  const [isListsUpdated, setIsListsUpdated] = useState(false);
 
   const colors = [
     "#F0F8FF",
@@ -119,11 +120,7 @@ function Toolbar() {
       const result = await response.json();
       console.log("List archived:", result);
 
-      setShoppingLists((prevLists) =>
-        prevLists.map((list) =>
-          list.id === listToArchive ? { ...list, status: "archived" } : list
-        )
-      );
+      setIsListsUpdated(true);
     } catch (error) {
       console.error("Error archiving list:", error);
     }
@@ -177,8 +174,11 @@ function Toolbar() {
       }
     };
 
-    fetchLists();
-  }, []);
+    if (isListsUpdated) {
+      fetchLists();
+      setIsListsUpdated(false);
+    }
+  }, [isListsUpdated]);
 
   const filteredOV = shoppingLists.filter((list) =>
     showArchived ? true : list.status === "active"
