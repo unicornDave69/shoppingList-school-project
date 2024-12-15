@@ -15,20 +15,9 @@ function ListCard({
   const navigate = useNavigate();
 
   const handleDetailNavigation = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:8005/api/lists/get/${list.id}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch list details");
-      }
-      const data = await response.json();
-      navigate(`/list/${list.id}`, { state: { listDetails: data } });
-    } catch (error) {
-      console.error("Error fetching list details:", error);
-    }
+    navigate(`/lists/${list._id}`);
   };
-
+  console.log(list);
   return (
     <>
       <Card

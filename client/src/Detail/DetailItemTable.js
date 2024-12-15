@@ -18,8 +18,7 @@ import OwnerButtons from "./OwnerButtons";
 import LeaveButton from "./LeaveButton";
 
 function DetailItemTable() {
-  const { data, handlerMap, toggleShowResolved, setListDetails } =
-    useContext(DetailContext);
+  const { data, handlerMap, toggleShowResolved } = useContext(DetailContext);
   const { findShoppingList, updateShoppingList } = useContext(OverviewContext);
   const { loggedInUser } = useContext(UserContext);
 
@@ -32,7 +31,26 @@ function DetailItemTable() {
   const navigate = useNavigate();
   const { listId } = useParams();
 
-  const shoppingList = findShoppingList(listId);
+  // findShoppingList(listId);
+
+  const shoppingList = useEffect(() => {
+    const fetchListDetails = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8005/api/lists/get/${listId}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch list details");
+        }
+        const fetchedData = await response.json();
+        handlerMap.setListDetails(fetchedData);
+      } catch (error) {
+        console.error("Error fetching list details:", error);
+      }
+    };
+
+    fetchListDetails();
+  }, [listId, handlerMap]);
 
   if (!shoppingList) {
     return <h1>Seznam nebyl nalezen.</h1>;
@@ -78,13 +96,7 @@ function DetailItemTable() {
   return (
     <>
       <BackToOverview />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
+      <div className="text-center my-4">
         <h1>{shoppingList.name}</h1>
       </div>
       <ItemTable items={data.itemList} />
@@ -100,22 +112,20 @@ function DetailItemTable() {
       >
         <AddItemButton onClick={() => handlerMap.addItem({})} />
 
-        {isOwner && (
+        {isOwner ? (
           <OwnerButtons
             onAddMembers={() => setShowAddMembersModal(true)}
             onDeleteMembers={() => setShowDeleteMembersModal(true)}
             onEditName={() => setShowListNameModal(true)}
           />
-        )}
-
-        {!isOwner && (
+        ) : (
           <LeaveButton onLeave={() => handleRemoveMember(loggedInUser)} />
         )}
 
         <Button
           variant="info"
           className="d-flex align-items-center justify-content-center"
-          onClick={() => toggleShowResolved()}
+          onClick={toggleShowResolved}
           style={{
             borderRadius: "50%",
             width: "75px",
