@@ -16,10 +16,7 @@ function App() {
           <Router>
             <Routes>
               <Route path="/" element={<Overview />} />
-              <Route
-                path="/api/lists/:listId"
-                element={<Detail DetailItemTable={DetailItemTable} />}
-              />
+              <Route path="/lists/:listId" element={<DetailItemTable />} />
             </Routes>
           </Router>
         </DetailProvider>

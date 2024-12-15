@@ -1,9 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { MdDone } from "react-icons/md";
+
 import { DetailContext } from "../Providers/DetailProvider";
 import { OverviewContext } from "../Providers/OverviewProvider";
 import { UserContext } from "../Providers/UserProvider";
-import { useParams, useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+
 import BackToOverview from "./BackToOverviewButton";
 import ConfirmLeave from "./ConfirmLeaveListModal";
 import AddMembersModal from "./AddMembersModal";
@@ -13,10 +16,10 @@ import ItemTable from "./ItemTable";
 import AddItemButton from "./AddItemButton";
 import OwnerButtons from "./OwnerButtons";
 import LeaveButton from "./LeaveButton";
-import { MdDone } from "react-icons/md";
 
 function DetailItemTable() {
-  const { data, handlerMap, toggleShowResolved } = useContext(DetailContext);
+  const { data, handlerMap, toggleShowResolved, setListDetails } =
+    useContext(DetailContext);
   const { findShoppingList, updateShoppingList } = useContext(OverviewContext);
   const { loggedInUser } = useContext(UserContext);
 
@@ -28,34 +31,8 @@ function DetailItemTable() {
 
   const navigate = useNavigate();
   const { listId } = useParams();
+
   const shoppingList = findShoppingList(listId);
-  const { setListDetails } = useContext(DetailContext);
-
-  useEffect(() => {
-    const fetchListDetails = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:8005/api/lists/get/${listId}`,
-          {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch the shopping list.");
-        }
-
-        const listData = await response.json();
-        setListDetails(listData);
-      } catch (error) {
-        console.error("Error fetching list details:", error);
-        navigate("/");
-      }
-    };
-
-    fetchListDetails();
-  }, [listId, setListDetails, navigate]);
 
   if (!shoppingList) {
     return <h1>Seznam nebyl nalezen.</h1>;

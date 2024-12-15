@@ -3,7 +3,7 @@ import { Card, Button } from "react-bootstrap";
 import { FaTrash } from "react-icons/fa";
 import { IoIosArchive } from "react-icons/io";
 import { TbListDetails } from "react-icons/tb";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 function ListCard({
   list,
@@ -11,13 +11,22 @@ function ListCard({
   handleShowConfirmModal,
   handleShowArchiveModal,
   isOwner,
-  findShoppingList,
-  handleCloseConfirmModal,
 }) {
   const navigate = useNavigate();
 
-  const handleDetailNavigation = () => {
-    navigate(`/list/${list.id}`);
+  const handleDetailNavigation = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8005/api/lists/get/${list.id}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch list details");
+      }
+      const data = await response.json();
+      navigate(`/list/${list.id}`, { state: { listDetails: data } });
+    } catch (error) {
+      console.error("Error fetching list details:", error);
+    }
   };
 
   return (
