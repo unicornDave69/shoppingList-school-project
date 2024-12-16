@@ -42,7 +42,11 @@ function DetailItemTable() {
           throw new Error("Failed to fetch list details");
         }
         const fetchedData = await response.json();
-        setLocalShoppingList(fetchedData);
+
+        if (fetchedData.name !== localShoppingList?.name) {
+          setLocalShoppingList(fetchedData);
+        }
+
         handlerMap.setListDetails(fetchedData);
       } catch (error) {
         console.error("Error fetching list details:", error);
@@ -50,7 +54,7 @@ function DetailItemTable() {
     };
 
     fetchListDetails();
-  }, [listId, handlerMap]);
+  }, [listId, handlerMap, localShoppingList?.name]); // Závislosti, včetně názvu seznamu
 
   if (!localShoppingList) {
     return <h1>Seznam nebyl nalezen.</h1>;
