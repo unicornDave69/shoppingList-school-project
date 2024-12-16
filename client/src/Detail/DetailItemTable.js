@@ -94,13 +94,42 @@ function DetailItemTable() {
     setShowDeleteMembersModal(false);
   };
 
-  const handleUpdateListName = (newName) => {
+  // const handleUpdateListName = (newName) => {
+  //   const updatedList = { ...localShoppingList, name: newName };
+  //   setLocalShoppingList(updatedList);
+  //   updateShoppingList(listId, updatedList);
+  //   setShowListNameModal(false);
+  // };
+
+  const handleUpdateListName = async (newName) => {
     const updatedList = { ...localShoppingList, name: newName };
     setLocalShoppingList(updatedList);
-    updateShoppingList(listId, updatedList);
+
+    // PUT request to update the list name on the server
+    try {
+      const response = await fetch(
+        `http://localhost:8005/api/lists/put/${listId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedList),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update the list name on the server.");
+      }
+
+      // Update state in the provider if the request is successful
+      handlerMap.updateListName({ name: newName });
+    } catch (error) {
+      console.error("Error updating list name:", error);
+    }
+
     setShowListNameModal(false);
   };
-
   return (
     <>
       <BackToOverview />
