@@ -8,7 +8,6 @@ import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import ConfirmArchiveModal from "./ConfirmArchiveModal";
 import ListCard from "./ListCard";
 import DetailTable from "../Detail/DetailItemTable";
-import { useParams } from "react-router-dom";
 
 function Toolbar() {
   const { loggedInUser, userMap } = useContext(UserContext);
@@ -24,7 +23,6 @@ function Toolbar() {
   const [showTable, setShowTable] = useState(false);
   const [selectedList, setSelectedList] = useState(null);
   const [listToArchive, setListToArchive] = useState(null);
-  const [isListsUpdated, setIsListsUpdated] = useState(false);
 
   const colors = [
     "#F0F8FF",
@@ -85,9 +83,6 @@ function Toolbar() {
         throw new Error(`Failed to delete list: ${errorMessage}`);
       }
 
-      const result = await response.json();
-      console.log("Deleted list:", result);
-
       setShoppingLists((prevLists) =>
         prevLists.filter((list) => list._id !== listToDeleteId)
       );
@@ -100,10 +95,10 @@ function Toolbar() {
 
   const handleCloseArchiveModal = () => setShowArchiveModal(false);
 
-  const confirmArchive = async (listToArchive) => {
+  const confirmArchive = async (listToArchiveId) => {
     try {
       const response = await fetch(
-        `http://localhost:8005/api/lists/put/${listToArchive}`,
+        `http://localhost:8005/api/lists/put/${listToArchiveId}`,
         {
           method: "PUT",
           headers: {
@@ -117,10 +112,11 @@ function Toolbar() {
         throw new Error("Failed to archive the list");
       }
 
-      const result = await response.json();
-      console.log("List archived:", result);
-
-      setIsListsUpdated(true);
+      setShoppingLists((prevLists) =>
+        prevLists.map((list) =>
+          list._id === listToArchiveId ? { ...list, status: "archived" } : list
+        )
+      );
     } catch (error) {
       console.error("Error archiving list:", error);
     }
@@ -160,25 +156,22 @@ function Toolbar() {
     handleCloseModal();
   };
 
-  useEffect(() => {
-    const fetchLists = async () => {
-      try {
-        const response = await fetch("http://localhost:8005/api/lists/list");
-        if (!response.ok) {
-          throw new Error("Failed to fetch lists");
-        }
-        const data = await response.json();
-        setShoppingLists(data);
-      } catch (error) {
-        console.error("Error fetching lists:", error);
+  const fetchLists = async () => {
+    try {
+      const response = await fetch("http://localhost:8005/api/lists/list");
+      if (!response.ok) {
+        throw new Error("Failed to fetch lists");
       }
-    };
-
-    if (isListsUpdated) {
-      fetchLists();
-      setIsListsUpdated(false);
+      const data = await response.json();
+      setShoppingLists(data);
+    } catch (error) {
+      console.error("Error fetching lists:", error);
     }
-  }, [isListsUpdated]);
+  };
+
+  useEffect(() => {
+    fetchLists();
+  }, []);
 
   const filteredOV = shoppingLists.filter((list) =>
     showArchived ? true : list.status === "active"
@@ -229,16 +222,28 @@ function Toolbar() {
               >
                 <ListCard
                   list={list}
-                  backgroundColor={getColorForList(list.id)}
+                  backgroundColor={getColorForList(list._id)}
                   handleShowConfirmModal={() => handleShowConfirmModal(list)}
                   handleShowArchiveModal={() => handleShowArchiveModal(list)}
                   isOwner={list.owner === loggedInUser}
+                  onViewDetails={() => {
+                    setSelectedList(list);
+                    setShowTable(true);
+                  }}
                 />
               </Col>
             )
         )}
       </Row>
-      {showTable && selectedList && <DetailTable list={selectedList} />}
+      {showTable && selectedList && (
+        <DetailTable
+          list={selectedList}
+          onBackToOverview={() => {
+            setShowTable(false);
+            fetchLists();
+          }}
+        />
+      )}
     </Container>
   );
 }
