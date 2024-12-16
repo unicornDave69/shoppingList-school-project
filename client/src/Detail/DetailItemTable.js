@@ -81,12 +81,12 @@ function DetailItemTable() {
     }
   };
 
-  const handleAddMember = (newMemberId) => {
-    const updatedMembers = [...localShoppingList.memberList, newMemberId];
-    const updatedList = { ...localShoppingList, memberList: updatedMembers };
-    setLocalShoppingList(updatedList);
-    updateShoppingList(listId, updatedList);
-  };
+  // const handleAddMember = (newMemberId) => {
+  //   const updatedMembers = [...localShoppingList.memberList, newMemberId];
+  //   const updatedList = { ...localShoppingList, memberList: updatedMembers };
+  //   setLocalShoppingList(updatedList);
+  //   updateShoppingList(listId, updatedList);
+  // };
 
   const handleDeleteMembers = (membersToRemove) => {
     const updatedMembers = localShoppingList.memberList.filter(
@@ -98,12 +98,30 @@ function DetailItemTable() {
     setShowDeleteMembersModal(false);
   };
 
-  // const handleUpdateListName = (newName) => {
-  //   const updatedList = { ...localShoppingList, name: newName };
-  //   setLocalShoppingList(updatedList);
-  //   updateShoppingList(listId, updatedList);
-  //   setShowListNameModal(false);
-  // };
+  const handleAddMember = (newMemberId) => {
+    const updatedMembers = [...localShoppingList.memberList, newMemberId];
+    const updatedList = { ...localShoppingList, memberList: updatedMembers };
+    setLocalShoppingList(updatedList);
+
+    try {
+      const response = fetch(`http://localhost:8005/api/lists/put/${listId}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(updatedList),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update the member list on the server.");
+      }
+      handlerMap.addMembersBulk(updatedMembers);
+    } catch (error) {
+      console.error("Error updating memberList:", error);
+    }
+
+    setShowAddMembersModal(false);
+  };
 
   const handleUpdateListName = async (newName) => {
     const updatedList = { ...localShoppingList, name: newName };
