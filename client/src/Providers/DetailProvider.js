@@ -58,7 +58,7 @@ function DetailProvider({ children }) {
       updateListName: ({ name }) => {
         setData((current) => ({ ...current, name }));
       },
-      addMembersBulk: ({ memberIds }) => {
+      editMembers: ({ memberIds }) => {
         setData((prev) => ({ ...prev, memberList: memberIds }));
       },
     },

@@ -19,7 +19,7 @@ import LeaveButton from "./LeaveButton";
 
 function DetailItemTable() {
   const { handlerMap, toggleShowResolved } = useContext(DetailContext);
-  const { updateShoppingList } = useContext(OverviewContext);
+  useContext(OverviewContext);
   const { loggedInUser } = useContext(UserContext);
 
   const [localShoppingList, setLocalShoppingList] = useState(null);
@@ -54,7 +54,7 @@ function DetailItemTable() {
     };
 
     fetchListDetails();
-  }, [listId, handlerMap, localShoppingList?.name]); // Závislosti, včetně názvu seznamu
+  }, [listId, handlerMap, localShoppingList?.name]);
 
   if (!localShoppingList) {
     return <h1>Seznam nebyl nalezen.</h1>;
@@ -67,36 +67,67 @@ function DetailItemTable() {
     setShowConfirmLeaveModal(true);
   };
 
-  const handleConfirmLeave = () => {
+  const handleConfirmLeave = async () => {
     const updatedMembers = localShoppingList.memberList.filter(
-      (member) => member !== memberToRemove
+      (member) => member !== loggedInUser
     );
     const updatedList = { ...localShoppingList, memberList: updatedMembers };
-    setLocalShoppingList(updatedList);
-    updateShoppingList(listId, updatedList);
-    setShowConfirmLeaveModal(false);
 
-    if (memberToRemove === loggedInUser) {
+    try {
+      const response = await fetch(
+        `http://localhost:8005/api/lists/put/${listId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedList),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update the member list on the server.");
+      }
+
+      // Aktualizace stavu a provideru
+      setLocalShoppingList(updatedList);
+      handlerMap.editMembers(updatedMembers);
+
+      // Přesměrování na domovskou stránku
       navigate("/");
+    } catch (error) {
+      console.error("Error updating memberList:", error);
     }
   };
 
-  // const handleAddMember = (newMemberId) => {
-  //   const updatedMembers = [...localShoppingList.memberList, newMemberId];
-  //   const updatedList = { ...localShoppingList, memberList: updatedMembers };
-  //   setLocalShoppingList(updatedList);
-  //   updateShoppingList(listId, updatedList);
-  // };
-
+  ///////////////////////////////////////////////////////////////////////////////////////////
   const handleDeleteMembers = (membersToRemove) => {
     const updatedMembers = localShoppingList.memberList.filter(
       (member) => !membersToRemove.includes(member)
     );
     const updatedList = { ...localShoppingList, memberList: updatedMembers };
     setLocalShoppingList(updatedList);
-    updateShoppingList(listId, updatedList);
+
+    try {
+      const response = fetch(`http://localhost:8005/api/lists/put/${listId}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(updatedList),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update the member list on the server.");
+      }
+      handlerMap.editMembers(updatedMembers);
+    } catch (error) {
+      console.error("Error updating memberList:", error);
+    }
+
     setShowDeleteMembersModal(false);
   };
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   const handleAddMember = (newMemberId) => {
     const updatedMembers = [...localShoppingList.memberList, newMemberId];
@@ -213,6 +244,7 @@ function DetailItemTable() {
         onClose={() => setShowConfirmLeaveModal(false)}
         onLeave={handleConfirmLeave}
       />
+
       <ListNameModal
         show={showListNameModal}
         handleClose={() => setShowListNameModal(false)}
