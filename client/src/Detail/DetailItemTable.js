@@ -28,6 +28,8 @@ function DetailItemTable() {
   const [showDeleteMembersModal, setShowDeleteMembersModal] = useState(false);
   const [showListNameModal, setShowListNameModal] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(null);
+  const [itemName, setItemName] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   const navigate = useNavigate();
   const { listId } = useParams();
@@ -66,7 +68,7 @@ function DetailItemTable() {
     setMemberToRemove(memberId);
     setShowConfirmLeaveModal(true);
   };
-
+  ///////////////////////////////////////////////////////////////////////////////////////////
   const handleConfirmLeave = async () => {
     const updatedMembers = localShoppingList.memberList.filter(
       (member) => member !== loggedInUser
@@ -89,11 +91,9 @@ function DetailItemTable() {
         throw new Error("Failed to update the member list on the server.");
       }
 
-      // Aktualizace stavu a provideru
       setLocalShoppingList(updatedList);
       handlerMap.editMembers(updatedMembers);
 
-      // Přesměrování na domovskou stránku
       navigate("/");
     } catch (error) {
       console.error("Error updating memberList:", error);
@@ -183,6 +183,42 @@ function DetailItemTable() {
 
     setShowListNameModal(false);
   };
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  const handleConfirmCreateItem = async (newItem) => {
+    const updatedList = { ...localShoppingList, itemList: newItem };
+    setLocalShoppingList(updatedList);
+
+    try {
+      const response = await fetch(
+        `http://localhost:8005/api/lists/put/${listId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedList),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update the itemList on the server.");
+      }
+
+      handlerMap.addItem({
+        itemList: {
+          itemId: Math.random().toString(),
+          itemName,
+          quantity: parseInt(quantity, 10),
+        },
+      });
+    } catch (error) {
+      console.error("Error updating itemList name:", error);
+    }
+    setItemName("");
+    setQuantity("");
+    handleCloseModal();
+  };
+
   return (
     <>
       <BackToOverview />
@@ -200,7 +236,7 @@ function DetailItemTable() {
           zIndex: 1000,
         }}
       >
-        <AddItemButton onClick={() => handlerMap.addItem({})} />
+        <AddItemButton onClick={() => handleConfirmCreateItem({})} />
 
         {isOwner ? (
           <OwnerButtons

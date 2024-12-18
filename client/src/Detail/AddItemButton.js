@@ -4,24 +4,10 @@ import { Modal, Button, Form } from "react-bootstrap";
 import { IoMdAdd } from "react-icons/io";
 
 function AddButton() {
-  const { handlerMap } = useContext(DetailContext);
+  // const { handlerMap } = useContext(DetailContext);
   const [showModal, setShowModal] = useState(false);
-  const [itemName, setItemName] = useState("");
-  const [quantity, setQuantity] = useState("");
-
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-
-  const handleCreateItem = () => {
-    handlerMap.addItem({
-      itemId: Math.random().toString(),
-      itemName,
-      quantity: parseInt(quantity, 10),
-    });
-    setItemName("");
-    setQuantity("");
-    handleCloseModal();
-  };
 
   return (
     <>
