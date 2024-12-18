@@ -30,13 +30,10 @@ function DetailProvider({ children }) {
   const value = {
     data: dataFilter,
     handlerMap: {
-      addItem: ({ itemId, itemName, quantity }) => {
+      addItem: (newItem) => {
         setData((current) => ({
           ...current,
-          itemList: [
-            ...current.itemList,
-            { itemId, itemName, quantity, resolved: false },
-          ],
+          itemList: [...current.itemList, newItem],
         }));
       },
       resolveItem: ({ itemId }) => {

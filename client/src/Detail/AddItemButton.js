@@ -3,9 +3,10 @@ import { DetailContext } from "../Providers/DetailProvider";
 import { Modal, Button, Form } from "react-bootstrap";
 import { IoMdAdd } from "react-icons/io";
 
-function AddButton() {
-  // const { handlerMap } = useContext(DetailContext);
+function AddButton({ handleConfirmCreateItem }) {
   const [showModal, setShowModal] = useState(false);
+  const [itemName, setItemName] = useState("");
+  const [quantity, setQuantity] = useState("");
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
@@ -52,7 +53,7 @@ function AddButton() {
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleCreateItem}>
+          <Button variant="primary" onClick={handleConfirmCreateItem}>
             Save Item
           </Button>
         </Modal.Footer>

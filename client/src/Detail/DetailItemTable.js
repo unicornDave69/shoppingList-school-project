@@ -184,9 +184,19 @@ function DetailItemTable() {
     setShowListNameModal(false);
   };
   ///////////////////////////////////////////////////////////////////////////////////////////
-  const handleConfirmCreateItem = async (newItem) => {
-    const updatedList = { ...localShoppingList, itemList: newItem };
-    setLocalShoppingList(updatedList);
+
+  const handleConfirmCreateItem = async () => {
+    const newItem = {
+      itemId: Math.random().toString(),
+      itemName,
+      quantity: parseInt(quantity, 10),
+      resolved: false,
+    };
+
+    const updatedList = {
+      ...localShoppingList,
+      itemList: [...localShoppingList.itemList, newItem],
+    };
 
     try {
       const response = await fetch(
@@ -204,19 +214,17 @@ function DetailItemTable() {
         throw new Error("Failed to update the itemList on the server.");
       }
 
-      handlerMap.addItem({
-        itemList: {
-          itemId: Math.random().toString(),
-          itemName,
-          quantity: parseInt(quantity, 10),
-        },
-      });
+      // Aktualizace dat v kontextu
+      setLocalShoppingList(updatedList);
+      handlerMap.addItem(newItem);
     } catch (error) {
-      console.error("Error updating itemList name:", error);
+      console.error("Error updating itemList:", error);
     }
+
+    // Vyčištění vstupních polí
     setItemName("");
     setQuantity("");
-    handleCloseModal();
+    // handleCloseModal();
   };
 
   return (
@@ -236,7 +244,7 @@ function DetailItemTable() {
           zIndex: 1000,
         }}
       >
-        <AddItemButton onClick={() => handleConfirmCreateItem({})} />
+        <AddItemButton handleConfirmCreateItem={handleConfirmCreateItem} />
 
         {isOwner ? (
           <OwnerButtons
