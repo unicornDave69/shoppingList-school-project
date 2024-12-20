@@ -6,6 +6,7 @@ import { UserProvider } from "./Providers/UserProvider";
 import Overview from "./Overview/Overview";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import DetailItemTable from "./Detail/DetailItemTable";
+import DarkMode from "./DarkMode"; // Importujte komponentu
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <OverviewProvider>
         <DetailProvider>
           <Router>
+            <DarkMode />
             <Routes>
               <Route path="/" element={<Overview />} />
               <Route path="/lists/:listId" element={<DetailItemTable />} />

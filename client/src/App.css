@@ -1,6 +1,15 @@
-*{
-    background-color: "#DCDCDC";
-}
-
-
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  
+  body.dark-mode .btn-dark {
+    background-color: #333333;
+    border-color: #333333;
+  }
+  
+  body.dark-mode .btn-light {
+    background-color: #eeeeee;
+    color: #000000;
+  }
   

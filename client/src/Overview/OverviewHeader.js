@@ -1,4 +1,3 @@
-// Header.js
 import Logo from "./OverviewLogo.js";
 import UserBar from "./OveriewUserBar.js";
 
