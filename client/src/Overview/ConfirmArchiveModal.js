@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 function ConfirmArchiveModal({
   showArchiveModal,
@@ -7,23 +8,25 @@ function ConfirmArchiveModal({
   listToArchive,
   confirmArchive,
 }) {
+  const { t } = useTranslation();
+
   return (
     <Modal show={showArchiveModal} onHide={handleCloseArchiveModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Potvrzení archivace</Modal.Title>
+        <Modal.Title>{t("confirm_archive_title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Opravdu chcete archivovat seznam "{listToArchive?.name}"?
+        {t("confirm_archive_body", { name: listToArchive?.name })}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="primary" onClick={handleCloseArchiveModal}>
-          Zrušit
+          {t("cancel")}
         </Button>
         <Button
           variant="secondary"
           onClick={() => confirmArchive(listToArchive._id)}
         >
-          Archivovat
+          {t("archive")}
         </Button>
       </Modal.Footer>
     </Modal>

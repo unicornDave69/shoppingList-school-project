@@ -1,0 +1,16 @@
+{
+    "confirm_archive_title": "Potvrzení archivace",
+    "confirm_archive_body": "Opravdu chcete archivovat seznam \"{{name}}\"?",
+    "cancel": "Zrušit",
+    "archive": "Archivovat",
+    "confirm_delete_title": "Potvrzení smazání",
+    "confirm_delete_body": "Opravdu chcete smazat seznam \"{{name}}\" (ID: {{id}})?",
+    "delete": "Smazat",
+    "create_list_title": "Vytvořit nákupní seznam",
+    "list_name_label": "Název seznamu",
+    "list_name_placeholder": "Zadejte název seznamu",
+    "select_members": "Vyber členy",
+    "members": "Členové",
+    "save_list": "Uložit seznam"
+  }
+  
