@@ -1,0 +1,16 @@
+{
+    "confirm_archive_title": "Confirm Archive",
+    "confirm_archive_body": "Do you really want to archive the list \"{{name}}\"?",
+    "cancel": "Cancel",
+    "archive": "Archive",
+    "confirm_delete_title": "Confirm Deletion",
+    "confirm_delete_body": "Do you really want to delete the list \"{{name}}\" (ID: {{id}})?",
+    "delete": "Delete",
+    "create_list_title": "Create Shopping List",
+    "list_name_label": "List Name",
+    "list_name_placeholder": "Enter list name",
+    "select_members": "Select Members",
+    "members": "Members",
+    "save_list": "Save List"
+  }
+  
